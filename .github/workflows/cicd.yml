@@ -1,0 +1,59 @@
+name: CI/CD
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+  pull_request:
+
+jobs:
+  test:
+    name: Test
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: [3.6, 3.7, 3.8]
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install Poetry
+        uses: abatilo/actions-poetry@v2.0.0
+
+      - name: Install dependencies
+        run: poetry install
+
+      - name: Test with pytest
+        run: poetry run pytest
+
+  lint:
+    name: Lint and validate
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python 3.7
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+
+      - name: Install Poetry
+        uses: abatilo/actions-poetry@v2.0.0
+
+      - name: Install dependencies
+        run: poetry install
+
+      - name: Check formatting with black
+        run: poetry run flake8
+
+      - name: Check types with mypy
+        run: poetry run mypy actions_example_python
+
+      - name: Check vulnerabilities with bandit
+        run: poetry run bandit --ini .bandit -r actions_example_python/*
