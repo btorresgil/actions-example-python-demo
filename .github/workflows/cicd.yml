@@ -77,8 +77,11 @@ jobs:
       - name: Install dependencies
         run: poetry install
 
-      - name: Check formatting with black
+      - name: Lint with flake8
         run: poetry run flake8
+
+      - name: Check formatting with black
+        run: poetry run black --check .
 
       - name: Check types with mypy
         run: poetry run mypy actions_example_python

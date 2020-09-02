@@ -12,7 +12,7 @@
   "python.linting.enabled": true,
   "python.linting.pylintEnabled": false,
   "python.linting.banditEnabled": true,
-  "python.linting.banditArgs": ["--ini .bandit -r *"],
+  "python.linting.banditArgs": ["-r actions_example_python/*"],
   "python.linting.flake8Enabled": true,
   "python.linting.flake8CategorySeverity.E": "Warning",
   "python.linting.mypyEnabled": true,
